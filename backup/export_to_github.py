@@ -8,6 +8,9 @@ def export_to_github(repo_path, branch="main", commit_message="Aktualizacja proj
         # Inicjalizacja repozytorium, jeśli nie istnieje
         subprocess.run(["git", "init"], check=True)
 
+        # Zmiana nazwy domyślnej gałęzi na 'main'
+        subprocess.run(["git", "branch", "-M", branch], check=True)
+
         # Dodanie wszystkich plików
         subprocess.run(["git", "add", "."], check=True)
 

@@ -12,6 +12,9 @@ cd %REPO_PATH%
 REM Inicjalizacja repozytorium (jeśli nie istnieje)
 git init
 
+REM Zmiana nazwy domyślnej gałęzi na 'main'
+git branch -M %GIT_BRANCH%
+
 REM Dodanie wszystkich plików
 git add .
 
