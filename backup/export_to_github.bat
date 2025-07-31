@@ -21,8 +21,8 @@ git add .
 REM Commit zmian
 git commit -m %COMMIT_MESSAGE%
 
-REM Ustawienie zdalnego repozytorium (jeśli nie ustawione)
-git remote add origin https://github.com/koradus4/prosta_gra_lebowa
+REM Sprawdzenie, czy zdalne repozytorium już istnieje
+(git remote get-url origin >nul 2>nul && git remote set-url origin https://github.com/koradus4/prosta_gra_lebowa) || git remote add origin https://github.com/koradus4/prosta_gra_lebowa
 
 REM Wypchnięcie zmian na zdalne repozytorium
 git push -u origin %GIT_BRANCH%
