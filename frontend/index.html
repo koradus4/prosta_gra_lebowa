@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gra - Wybór Drużyny</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Wybór Drużyny</h1>
+    <form id="team-selection">
+        <label for="nation">Nacja:</label>
+        <select id="nation" name="nation">
+            <option value="allies">Alianci</option>
+            <option value="germans">Niemcy</option>
+        </select>
+
+        <label for="turn-time">Czas na turę (sekundy):</label>
+        <input type="number" id="turn-time" name="turn-time" min="10" max="300" required>
+
+        <label for="general">Generał:</label>
+        <input type="text" id="general" name="general" required>
+
+        <label for="commanders">Dowódcy (oddzieleni przecinkami):</label>
+        <input type="text" id="commanders" name="commanders" required>
+
+        <button type="submit">Zatwierdź</button>
+    </form>
+
+    <div id="waiting" style="display:none;">
+        <p>Oczekiwanie na drugiego gracza...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
