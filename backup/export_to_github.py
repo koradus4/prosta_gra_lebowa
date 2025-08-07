@@ -14,6 +14,12 @@ def export_to_github(repo_path, branch="main", commit_message="Aktualizacja proj
         # Dodanie wszystkich plików
         subprocess.run(["git", "add", "."], check=True)
 
+        # Sprawdzenie statusu repozytorium
+        status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+        if not status_result.stdout.strip():
+            print("Brak zmian do zatwierdzenia.")
+            return
+
         # Commit zmian
         subprocess.run(["git", "commit", "-m", commit_message], check=True)
 
