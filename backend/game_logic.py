@@ -7,6 +7,7 @@ from typing import Dict, List, Tuple, Any
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 DEFAULT_MAP_PATH = os.path.join(DATA_DIR, 'map.json')
 DEFAULT_TOKENS_PATH = os.path.join(DATA_DIR, 'tokens.json')
+DEFAULT_PLACEMENTS_PATH = os.path.join(DATA_DIR, 'placements.json')
 
 
 def ensure_data_dir():
@@ -66,7 +67,19 @@ class GameManager:
 
     # ---- placements ----
     def get_placements(self, room: str) -> List[Dict[str, Any]]:
-        return self._placements.get(room, [])
+        if room in self._placements:
+            return self._placements[room]
+        if room == 'default':
+            data = read_json(DEFAULT_PLACEMENTS_PATH, [])
+            # ensure normalization
+            for p in data:
+                p.setdefault('id', str(uuid.uuid4()))
+                p.setdefault('owner', 0)
+                p.setdefault('hp', self._hp_for_type(room, p.get('type')))
+                p['x'] = int(p['x']); p['y'] = int(p['y'])
+            self._placements[room] = data
+            return data
+        return []
 
     def set_placements(self, room: str, data: List[Dict[str, Any]]):
         # normalize id
@@ -76,6 +89,13 @@ class GameManager:
             p.setdefault('owner', 0)
             p.setdefault('hp', self._hp_for_type(room, p.get('type')))
         self._placements[room] = data
+        if room == 'default':
+            # write without ids to keep file clean of UUID churn
+            persist = [
+                {"type": p['type'], "owner": p['owner'], "x": int(p['x']), "y": int(p['y'])}
+                for p in data
+            ]
+            write_json(DEFAULT_PLACEMENTS_PATH, persist)
 
     # ---- sessions ----
     def join_room(self, room: str) -> int:
@@ -181,3 +201,6 @@ def load_persisted_defaults():
     # Touch defaults so they are created on disk if missing
     game_manager.set_map(game_manager.get_map('default'))
     game_manager.set_token_types(game_manager.get_token_types('default'))
+    # Load placements into memory (and create file if missing)
+    pls = game_manager.get_placements('default')
+    game_manager.set_placements('default', pls)

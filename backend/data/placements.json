@@ -1,0 +1,8 @@
+[
+  { "type": "infantry",  "owner": 0, "x": 1, "y": 1 },
+  { "type": "tank",     "owner": 0, "x": 2, "y": 1 },
+  { "type": "artillery", "owner": 0, "x": 1, "y": 2 },
+  { "type": "infantry",  "owner": 1, "x": 6, "y": 6 },
+  { "type": "tank",     "owner": 1, "x": 5, "y": 6 },
+  { "type": "artillery", "owner": 1, "x": 6, "y": 5 }
+]
