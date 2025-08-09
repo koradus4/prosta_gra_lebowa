@@ -10,35 +10,10 @@ h1 {
     color: #333;
 }
 
-form {
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
-
-label {
-    display: block;
-    margin: 10px 0 5px;
-}
-
-input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    background-color: #5cb85c;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #4cae4c;
-}
+header { background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.08); padding: 10px; }
+nav a { margin: 0 10px; color: #0366d6; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+.panel { margin: 10px auto; width: 660px; display: flex; gap: 8px; align-items: center; justify-content: center; }
+button { padding: 8px 12px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; }
+button.active, button:hover { background: #e6f0ff; border-color: #8ab4f8; }
+canvas { background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.1); }

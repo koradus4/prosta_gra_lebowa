@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Edytor mapy</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <h1>Edytor mapy</h1>
+  <nav>
+    <a href="/">Gra</a>
+    <a href="/map_editor.html">Edytor mapy</a>
+    <a href="/token_editor.html">Edytor żetonów</a>
+    <a href="/placement_editor.html">Ustawienia jednostek</a>
+  </nav>
+</header>
+<main>
+  <div class="panel">
+    Szerokość: <input id="w" type="number" min="4" max="32" value="8" />
+    Wysokość: <input id="h" type="number" min="4" max="32" value="8" />
+    <select id="terrainType">
+      <option value="forest">Las</option>
+      <option value="hill">Wzgórze</option>
+      <option value="water">Woda</option>
+    </select>
+    <button id="save">Zapisz</button>
+  </div>
+  <canvas id="map" width="640" height="640"></canvas>
+</main>
+<script>
+const cell = 64; let data;
+const cvs = document.getElementById('map'); const ctx = cvs.getContext('2d');
+const wEl = document.getElementById('w'); const hEl = document.getElementById('h');
+const terrainType = document.getElementById('terrainType');
+
+async function api(path, options) { const r = await fetch(path, options); return r.json(); }
+async function load() { data = await api('/api/map'); wEl.value = data.width; hEl.value = data.height; draw(); }
+function color(t){ return t==='forest'?'#6a4':t==='hill'?'#b96':'#59c'; }
+function draw(){ cvs.width = data.width*cell; cvs.height=data.height*cell; ctx.fillStyle='#eef'; ctx.fillRect(0,0,cvs.width,cvs.height);
+  ctx.strokeStyle='#aaa'; for(let x=0;x<=data.width;x++){ctx.beginPath();ctx.moveTo(x*cell,0);ctx.lineTo(x*cell,cvs.height);ctx.stroke();}
+  for(let y=0;y<=data.height;y++){ctx.beginPath();ctx.moveTo(0,y*cell);ctx.lineTo(cvs.width,y*cell);ctx.stroke();}
+  for(const t of data.terrain||[]){ ctx.fillStyle=color(t.type); ctx.fillRect(t.x*cell,t.y*cell,cell,cell);} }
+
+cvs.addEventListener('click',(e)=>{ const r=cvs.getBoundingClientRect(); const x=Math.floor((e.clientX-r.left)/cell); const y=Math.floor((e.clientY-r.top)/cell);
+  const idx=(data.terrain||[]).findIndex(t=>t.x===x&&t.y===y); if(idx>=0){ data.terrain.splice(idx,1);} else { (data.terrain||(data.terrain=[])).push({x,y,type:terrainType.value}); } draw(); });
+
+document.getElementById('save').addEventListener('click', async ()=>{ data.width=parseInt(wEl.value); data.height=parseInt(hEl.value);
+  await api('/api/map', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)}); alert('Zapisano'); });
+
+load();
+</script>
+</body>
+</html>

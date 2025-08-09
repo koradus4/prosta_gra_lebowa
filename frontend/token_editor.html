@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Edytor żetonów</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <h1>Edytor żetonów</h1>
+  <nav>
+    <a href="/">Gra</a>
+    <a href="/map_editor.html">Edytor mapy</a>
+    <a href="/token_editor.html">Edytor żetonów</a>
+    <a href="/placement_editor.html">Ustawienia jednostek</a>
+  </nav>
+</header>
+<main>
+  <div class="panel" id="list"></div>
+  <div class="panel">
+    <input id="type" placeholder="typ (np. infantry)" />
+    HP <input id="hp" type="number" value="3" style="width:60px"/>
+    MOVE <input id="move" type="number" value="2" style="width:60px"/>
+    ATK <input id="attack" type="number" value="1" style="width:60px"/>
+    RNG <input id="range" type="number" value="1" style="width:60px"/>
+    <button id="add">Dodaj/Edytuj</button>
+    <button id="save">Zapisz</button>
+  </div>
+</main>
+<script>
+let tokens=[];
+async function api(path, options){ const r=await fetch(path, options); return r.json(); }
+async function load(){ tokens=await api('/api/tokens'); renderList(); }
+function renderList(){ const list=document.getElementById('list'); list.innerHTML=''; tokens.forEach((t,i)=>{
+  const btn = document.createElement('button'); btn.textContent = `${t.type} (hp:${t.hp} m:${t.move} atk:${t.attack} rng:${t.range})`; btn.onclick=()=>fill(i);
+  list.appendChild(btn);
+}); }
+function fill(i){ const t=tokens[i]; type.value=t.type; hp.value=t.hp; move.value=t.move; attack.value=t.attack; range.value=t.range; }
+add.onclick = ()=>{ const idx=tokens.findIndex(x=>x.type===type.value.trim()); const obj={ type:type.value.trim(), hp:parseInt(hp.value), move:parseInt(move.value), attack:parseInt(attack.value), range:parseInt(range.value) };
+  if(idx>=0) tokens[idx]=obj; else tokens.push(obj); renderList(); };
+save.onclick = async ()=>{ await api('/api/tokens', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(tokens)}); alert('Zapisano'); };
+load();
+</script>
+</body>
+</html>

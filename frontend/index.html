@@ -3,33 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gra - Wybór Drużyny</title>
+    <title>Prosta gra turowa</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Wybór Drużyny</h1>
-    <form id="team-selection">
-        <label for="nation">Nacja:</label>
-        <select id="nation" name="nation">
-            <option value="allies">Alianci</option>
-            <option value="germans">Niemcy</option>
-        </select>
+    <header>
+        <h1>Prosta gra turowa</h1>
+        <nav>
+            <a href="/">Gra</a>
+            <a href="/map_editor.html">Edytor mapy</a>
+            <a href="/token_editor.html">Edytor żetonów</a>
+            <a href="/placement_editor.html">Ustawienia jednostek</a>
+        </nav>
+    </header>
 
-        <label for="turn-time">Czas na turę (sekundy):</label>
-        <input type="number" id="turn-time" name="turn-time" min="10" max="300" required>
+    <main>
+        <div class="panel">
+            <button id="joinA">Dołącz jako Gracz A</button>
+            <button id="joinB">Dołącz jako Gracz B</button>
+            <button id="reset">Reset gry</button>
+            <span id="turnInfo"></span>
+        </div>
 
-        <label for="general">Generał:</label>
-        <input type="text" id="general" name="general" required>
+        <canvas id="board" width="640" height="640"></canvas>
 
-        <label for="commanders">Dowódcy (oddzieleni przecinkami):</label>
-        <input type="text" id="commanders" name="commanders" required>
-
-        <button type="submit">Zatwierdź</button>
-    </form>
-
-    <div id="waiting" style="display:none;">
-        <p>Oczekiwanie na drugiego gracza...</p>
-    </div>
+        <div class="panel">
+            <p>Kliknij swoją jednostkę, potem pole docelowe, lub wybierz cel ataku.</p>
+            <button id="modeMove" class="active">Tryb: Ruch</button>
+            <button id="modeAttack">Tryb: Atak</button>
+        </div>
+    </main>
 
     <script src="script.js"></script>
 </body>

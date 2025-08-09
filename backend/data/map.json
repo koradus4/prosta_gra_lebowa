@@ -1,0 +1,17 @@
+{
+  "grid": "square",
+  "width": 8,
+  "height": 8,
+  "terrain": [
+    {
+      "x": 3,
+      "y": 3,
+      "type": "forest"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "type": "hill"
+    }
+  ]
+}
