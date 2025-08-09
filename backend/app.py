@@ -26,8 +26,10 @@ def static_proxy(path):
     return jsonify({"error": "not_found"}), 404
 
 
-# ---------- Bootstrap danych ----------
-load_persisted_defaults()
+# ---------- Health ----------
+@app.get('/healthz')
+def healthz():
+    return jsonify({"status": "ok"})
 
 
 # ---------- API edytorów ----------
@@ -100,6 +102,12 @@ def api_move():
 
 
 def create_app():
+    # Bootstrap danych (bez efektów ubocznych przy imporcie modułu)
+    try:
+        load_persisted_defaults()
+    except Exception as e:
+        # Nie wywalaj serwera – pokaż błąd w /healthz i logach
+        app.logger.exception("Bootstrap danych nie powiódł się: %s", e)
     return app
 
 
@@ -107,4 +115,4 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     host = os.environ.get('HOST', '0.0.0.0')
     print(f"Serwer uruchomiony na http://{host}:{port}")
-    app.run(host=host, port=port, debug=True)
+    app.run(host=host, port=port, debug=False)

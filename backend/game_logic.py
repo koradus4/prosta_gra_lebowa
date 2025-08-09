@@ -204,3 +204,6 @@ def load_persisted_defaults():
     # Load placements into memory (and create file if missing)
     pls = game_manager.get_placements('default')
     game_manager.set_placements('default', pls)
+
+# Optional global health marker if needed later
+HEALTH = {"bootstrap": "ok"}
